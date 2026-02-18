@@ -181,3 +181,25 @@ INSERT INTO LIGNE (COMMANDE_NUMERO, MEDICAMENT_REFERENCE, QUANTITE) VALUES
 (6, 6, 110), (6, 16, 65), (6, 26, 85), (6, 36, 60), (6, 91, 70),
 (7, 7, 80), (7, 17, 50), (7, 27, 95), (7, 37, 55), (7, 100, 45),
 (8, 8, 100), (8, 18, 75), (8, 28, 80), (8, 38, 70), (8, 48, 60);
+-- Fournisseurs
+INSERT INTO FOURNISSEUR (ID, NOM, EMAIL) VALUES
+(1, 'PharmaDirect', 'pharmadirect+1@gmail.com'),
+(2, 'MediSupply', 'medisupply+1@gmail.com'),
+(3, 'EuroPharma', 'europharma+1@gmail.com'),
+(4, 'HealthStock', 'healthstock+1@gmail.com'),
+(5, 'BioCare', 'biocare+1@gmail.com'),
+(6, 'ProMed', 'promed+1@gmail.com');
+ALTER TABLE FOURNISSEUR ALTER COLUMN id RESTART WITH 7;
+
+-- Chaque catégorie a au moins 2 fournisseurs
+INSERT INTO CATEGORIE_FOURNISSEUR (CATEGORIE_CODE, FOURNISSEUR_ID) VALUES
+(1, 1),(1, 2),
+(2, 2),(2, 3),
+(3, 1),(3, 4),
+(4, 3),(4, 5),
+(5, 4),(5, 6),
+(6, 1),(6, 5),
+(7, 2),(7, 6),
+(8, 3),(8, 4),
+(9, 5),(9, 6),
+(10, 1),(10, 2);
