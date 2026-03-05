@@ -1,7 +1,6 @@
 package pharmacie.rest;
 
 import pharmacie.service.ApprovisionnementService;
-
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +13,7 @@ public class ApprovisionnementController {
         this.service = service;
     }
 
-    @PostMapping("/envoyer")
+    @PostMapping(value = "/envoyer", produces = "application/json")
     public String envoyerCommandes() {
 
         service.envoyerCommandes();
