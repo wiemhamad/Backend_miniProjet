@@ -13,14 +13,14 @@ public class MailTestController {
         this.mailgunService = mailgunService;
     }
 
-    @PostMapping
-    public String envoyerMail() {
+    @PostMapping("/test-mail")
+    public String testMail() {
 
         mailgunService.sendEmail(
-                "tonemail@gmail.com",
-                "Test Mailgun Pharmacie",
-                "Bonjour, ceci est un test d'envoi d'email depuis votre backend Spring Boot.");
+                "wiem.hamad@etud.univ-jfc.fr",
+                "Test Mailgun",
+                "Votre backend fonctionne correctement.");
 
-        return "Email envoyé avec succès";
+        return "Email envoyé";
     }
 }
