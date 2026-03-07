@@ -1,7 +1,9 @@
 package pharmacie.service;
 
-import pharmacie.entity.Medicament;
 import pharmacie.dao.MedicamentRepository;
+import pharmacie.entity.Categorie;
+import pharmacie.entity.Fournisseur;
+import pharmacie.entity.Medicament;
 
 import org.springframework.stereotype.Service;
 
@@ -23,29 +25,24 @@ public class ApprovisionnementService {
 
     public void envoyerCommandes() {
 
-        List<Medicament> medicaments = medicamentRepository.findAll();
-
-        StringBuilder message = new StringBuilder();
-
-        message.append("Bonjour,\n\n");
-        message.append("Merci de nous envoyer les médicaments suivants :\n\n");
+        List<Medicament> medicaments = medicamentRepository.findByUnitesEnStockLessThanNiveauDeReappro();
 
         for (Medicament m : medicaments) {
 
-            if (m.getUnitesEnStock() <= m.getNiveauDeReappro()) {
+            Categorie categorie = m.getCategorie();
 
-                int quantite = m.getNiveauDeReappro() * 2;
+            for (Fournisseur f : categorie.getFournisseurs()) {
 
-                message.append(m.getNom())
-                        .append(" : ")
-                        .append(quantite)
-                        .append(" unités\n");
+                String message = "Bonjour " + f.getNom() + "\n\n" +
+                        "Merci de nous envoyer un devis pour :\n\n" +
+                        m.getNom() + "\n\n" +
+                        "Cordialement\nPharmacie";
+
+                mailgunService.sendEmail(
+                        f.getEmail(),
+                        "Demande de devis",
+                        message);
             }
         }
-
-        mailgunService.sendEmail(
-                "pharmacie@test.com",
-                "Commande pharmacie",
-                message.toString());
     }
 }

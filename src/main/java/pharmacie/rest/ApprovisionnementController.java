@@ -4,7 +4,7 @@ import pharmacie.service.ApprovisionnementService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/approvisionnement")
+@RequestMapping("/approvisionnement")
 public class ApprovisionnementController {
 
     private final ApprovisionnementService service;
@@ -13,11 +13,11 @@ public class ApprovisionnementController {
         this.service = service;
     }
 
-    @PostMapping(value = "/envoyer", produces = "application/json")
-    public String envoyerCommandes() {
+    @PostMapping
+    public String lancerApprovisionnement() {
 
         service.envoyerCommandes();
 
-        return "Emails envoyés aux fournisseurs";
+        return "Demandes de devis envoyées aux fournisseurs";
     }
 }
