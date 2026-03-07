@@ -29,7 +29,7 @@ public class ApprovisionnementService {
                 for (Fournisseur fournisseur : medicament.getCategorie().getFournisseurs()) {
 
                     mailgunService.sendEmail(
-                            "wiem.hamad@etud.univ-jfc.fr", // test sandbox
+                            fournisseur.getEmail(),
                             "Demande de devis - Pharmacie",
                             "Bonjour,\n\n" +
                                     "Le médicament " + medicament.getNom() +
