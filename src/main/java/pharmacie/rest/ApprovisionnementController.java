@@ -1,6 +1,10 @@
 package pharmacie.rest;
 
 import pharmacie.service.ApprovisionnementService;
+
+import java.util.HashMap;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,11 +17,13 @@ public class ApprovisionnementController {
         this.service = service;
     }
 
-    @PostMapping
-    public String lancerApprovisionnement() {
+    @PostMapping("/approvisionnement")
+    public ResponseEntity<Map<String, String>> approvisionner() {
 
-        service.envoyerCommandes();
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Demandes de devis envoyées aux fournisseurs");
 
-        return "Demandes de devis envoyées aux fournisseurs";
+        return ResponseEntity.ok(response);
     }
 }
