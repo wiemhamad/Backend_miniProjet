@@ -1,10 +1,10 @@
 package pharmacie.service;
 
-import pharmacie.dao.MedicamentRepository;
-import pharmacie.entity.Categorie;
-import pharmacie.entity.Fournisseur;
 import pharmacie.entity.Medicament;
+import pharmacie.entity.Fournisseur;
+import pharmacie.dao.MedicamentRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,36 +12,35 @@ import java.util.List;
 @Service
 public class ApprovisionnementService {
 
-    private final MedicamentRepository medicamentRepository;
-    private final MailgunService mailgunService;
+    @Autowired
+    private MedicamentRepository medicamentRepository;
 
-    public ApprovisionnementService(
-            MedicamentRepository medicamentRepository,
-            MailgunService mailgunService) {
+    @Autowired
+    private MailgunService mailgunService;
 
-        this.medicamentRepository = medicamentRepository;
-        this.mailgunService = mailgunService;
-    }
+    public void lancerApprovisionnement() {
 
-    public void envoyerCommandes() {
+        List<Medicament> medicaments = medicamentRepository.findAll();
 
-        List<Medicament> medicaments = medicamentRepository.findByUnitesEnStockLessThanNiveauDeReappro();
+        for (Medicament medicament : medicaments) {
 
-        for (Medicament m : medicaments) {
+            if (medicament.getUnitesEnStock() < medicament.getNiveauDeReappro()) {
 
-            Categorie categorie = m.getCategorie();
+                List<Fournisseur> fournisseurs = medicament.getCategorie().getFournisseurs()
+                        .stream()
+                        .toList();
 
-            for (Fournisseur f : categorie.getFournisseurs()) {
+                for (Fournisseur fournisseur : fournisseurs) {
 
-                String message = "Bonjour " + f.getNom() + "\n\n" +
-                        "Merci de nous envoyer un devis pour :\n\n" +
-                        m.getNom() + "\n\n" +
-                        "Cordialement\nPharmacie";
-
-                mailgunService.sendEmail(
-                        f.getEmail(),
-                        "Demande de devis",
-                        message);
+                    mailgunService.sendEmail(
+                            "wiem.hamad@etud.univ-jfc.fr",
+                            "Demande de devis - Pharmacie",
+                            "Bonjour,\n\n" +
+                                    "Le médicament " + medicament.getNom() +
+                                    " est en rupture de stock.\n" +
+                                    "Merci de nous envoyer un devis.\n\n" +
+                                    "Cordialement.");
+                }
             }
         }
     }
