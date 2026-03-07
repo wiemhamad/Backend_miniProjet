@@ -1,9 +1,10 @@
 package pharmacie.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
-
 import kong.unirest.Unirest;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MailgunService {
@@ -16,12 +17,14 @@ public class MailgunService {
 
     public void sendEmail(String to, String subject, String text) {
 
-        Unirest.post("https://api.mailgun.net/v3/" + domain + "/messages")
+        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + domain + "/messages")
                 .basicAuth("api", apiKey)
                 .field("from", "Pharmacie <mailgun@" + domain + ">")
                 .field("to", to)
                 .field("subject", subject)
                 .field("text", text)
                 .asJson();
+
+        System.out.println(response.getBody());
     }
 }
