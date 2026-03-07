@@ -26,14 +26,10 @@ public class ApprovisionnementService {
 
             if (medicament.getUnitesEnStock() < medicament.getNiveauDeReappro()) {
 
-                List<Fournisseur> fournisseurs = medicament.getCategorie().getFournisseurs()
-                        .stream()
-                        .toList();
-
-                for (Fournisseur fournisseur : fournisseurs) {
+                for (Fournisseur fournisseur : medicament.getCategorie().getFournisseurs()) {
 
                     mailgunService.sendEmail(
-                            "wiem.hamad@etud.univ-jfc.fr",
+                            "wiem.hamad@etud.univ-jfc.fr", // test sandbox
                             "Demande de devis - Pharmacie",
                             "Bonjour,\n\n" +
                                     "Le médicament " + medicament.getNom() +

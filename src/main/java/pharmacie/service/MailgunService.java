@@ -15,9 +15,12 @@ public class MailgunService {
     @Value("${mailgun.domain}")
     private String domain;
 
+    @Value("${mailgun.base-url}")
+    private String baseUrl;
+
     public void sendEmail(String to, String subject, String text) {
 
-        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + domain + "/messages")
+        HttpResponse<JsonNode> response = Unirest.post(baseUrl + "/v3/" + domain + "/messages")
                 .basicAuth("api", apiKey)
                 .field("from", "Pharmacie <mailgun@" + domain + ">")
                 .field("to", to)
@@ -25,6 +28,6 @@ public class MailgunService {
                 .field("text", text)
                 .asJson();
 
-        System.out.println(response.getBody());
+        System.out.println("Mailgun response : " + response.getBody());
     }
 }

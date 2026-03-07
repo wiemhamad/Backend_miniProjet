@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ApprovisionnementController {
 
-    private ApprovisionnementService approvisionnementService;
+    private final ApprovisionnementService approvisionnementService;
+
+    public ApprovisionnementController(ApprovisionnementService approvisionnementService) {
+        this.approvisionnementService = approvisionnementService;
+    }
 
     @PostMapping("/approvisionnement")
-    public String lancerApprovisionnement() {
+    public String approvisionnement() {
 
         approvisionnementService.lancerApprovisionnement();
 
